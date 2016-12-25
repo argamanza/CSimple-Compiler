@@ -6,14 +6,20 @@ Created as a project for **"Introduction to Compilation"** course.
 ## Getting Started
 
 Fork or download the content of the repository to your computer.
+The compiler source code can be found inside the `src` folder.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+- [x] Scanner (Lexer)
+- [x] Parser
+- [ ] Finished Compiler
 
-```
-Give examples
-```
+### Prerequisites
+
+To compile the compiler (:confused:) you will need the following tools:
++ flex 2.5.35
++ bison (GNU Bison) 3.0.2
++ cc 4.8.4
 
 ### Installing
 
