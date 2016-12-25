@@ -3,15 +3,18 @@
 
 Created as a project for **"Introduction to Compilation"** course.
 
-## Getting Started
-
-Fork or download the content of the repository to your computer.
-The compiler source code can be found inside the `src` folder.
-### Prerequisites
+### Compiler Checklist
 
 - [x] Scanner (Lexer)
 - [x] Parser
 - [ ] Finished Compiler
+
+---
+
+## Getting Started
+
+Fork or download the content of the repository to your computer.
+The compiler source code can be found inside the `src` folder.
 
 ### Prerequisites
 
@@ -22,15 +25,16 @@ To compile the compiler (:confused:) you will need the following tools:
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+Open the folder which contains the `scanner.l` and `parser.y` and run the following commands **by order** inside your terminal:
 
-Say what the step will be
+``` c
+lex scanner.l // creates 'lex.yy.c'
+yacc parser.y -d // creates 'y.tab.c' & 'y.tab.h'
+cc lex.yy.c y.tab.c -o compiler -ll // compiles the scanner and parser into `compiler`
 
 ```
-Give the example
-```
 
-And repeat
+Now you have your own CSimple Compiler!
 
 ```
 until finished
