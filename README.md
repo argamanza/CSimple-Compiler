@@ -7,7 +7,6 @@ Created as a project for **"Introduction to Compilation"** course.
 
 Fork or download the content of the repository to your computer.
 The compiler source code can be found inside the `src` folder.
-
 ### Prerequisites
 
 - [x] Scanner (Lexer)
