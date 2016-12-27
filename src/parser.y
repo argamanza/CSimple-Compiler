@@ -37,7 +37,10 @@ int yyerror(const char *msg);
 %token <string> VAR PROCEDURE RETURN NULL_PTR
 %token <string> TYPE TYPE_STRING INTEGER IDENTIFIER
 
-%type <TreeNode> EXP COND BLOCK CHAR STR DEREF PTR ID  MULT_ID MULT_PARAMS PARAMS PROC TYP VARS INT LHS ASSIGNMENT STATEMENT MULT_STATEMENT BOOL_TYPE RETURN_STATEMENT BLOCK_W_RETURN MULTI_PROC PROGRAM WHILE_STATEMENT PROC_CALL MULT_EXP PAR_EXP STR_INDEX SIZE_OF
+%type <TreeNode> TYP ID DEREF INT CHAR STR BOOL_TYPE PROC_CALL PAR_EXP SIZE_OF
+%type <TreeNode> STR_INDEX PTR EXP MULT_EXP LHS ASSIGNMENT MULT_ID VARS PARAMS MULT_PARAMS
+%type <TreeNode> RETURN_STATEMENT COND WHILE_STATEMENT STATEMENT MULT_STATEMENT
+%type <TreeNode> BLOCK BLOCK_W_RETURN PROC MULTI_PROC PROGRAM S
 
 %left LT_OP GT_OP LE_OP GE_OP EQ_OP NE_OP
 %left AND_OP OR_OP
@@ -63,56 +66,19 @@ MULTI_PROC : MULTI_PROC PROC { $$ = makeNode("Multi Procedures", $1, $2); }
            ;
 
 PROC : PROCEDURE ID LP MULT_PARAMS RP RETURN TYP BLOCK_W_RETURN {
-  TreeNode* input = makeNode("INPUT", $2, $4);
-  TreeNode* output = makeNode("OUTPUT", $7, $8);
+ TreeNode* input = makeNode("INPUT", $2, $4);
+ TreeNode* output = makeNode("OUTPUT", $7, $8);
 
-  $$ = makeNode("PROCEDURE",input,output);
- }
-    | PROCEDURE ID LP RP RETURN TYP BLOCK_W_RETURN {
-    TreeNode* input = makeNode("INPUT", $2, NULL);
-    TreeNode* output = makeNode("OUTPUT", $6, $7);
+ $$ = makeNode("PROCEDURE",input,output);
+}
+     | PROCEDURE ID LP RP RETURN TYP BLOCK_W_RETURN {
+ TreeNode* input = makeNode("INPUT", $2, NULL);
+ TreeNode* output = makeNode("OUTPUT", $6, $7);
 
-    $$ = makeNode("PROCEDURE",input,output);
-   }
-
-VARS : VAR MULT_ID COLON TYP { $$ = makeNode("VARIABLES",$2 ,$4); }
-     | VAR MULT_ID COLON TYPE_STRING LB INT RB { $$ = makeNode("VARIABLES",$2 ,makeNode("STRING",$6,NULL)); }
+ $$ = makeNode("PROCEDURE",input,output);
+}
      ;
 
-MULT_PARAMS : MULT_PARAMS SEMI PARAMS { $$ = makeNode("MULTIPLE TYPES", $1, $3); }
-            | PARAMS { $$ = $1; }
-            ;
-
-PARAMS : MULT_ID COLON TYP { $$ = makeNode("PARAMETER",$1 ,$3); }
-       ;
-
-MULT_ID : MULT_ID COMMA ID { $$ = makeNode("MULTIPLE IDENTIFIERS", $1, $3); }
-        | ID { $$ = $1; }
-        ;
-
-MULT_STATEMENT : MULT_STATEMENT STATEMENT { $$ = makeNode("MULTI STATEMENT", $1,$2); }
-                | STATEMENT { $$ = $1 ; }
-                ;
-
-
-
-STATEMENT : ASSIGNMENT SEMI { $$ = makeNode("STATEMENT", $1, NULL); }
-          | VARS SEMI { $$ = makeNode("STATEMENT", $1, NULL); }
-          | COND { $$ = makeNode("STATEMENT", $1, NULL); }
-          | WHILE_STATEMENT { $$ = makeNode("STATEMENT", $1, NULL); }
-          | BLOCK { $$ = makeNode("STATEMENT", $1, NULL); }
-          | PROC { $$ = makeNode("STATEMENT", $1, NULL); }
-          ;
-
-RETURN_STATEMENT : RETURN EXP SEMI { $$ = makeNode("RETURN STATEMENT",$2,NULL);}
-                 ;
-
-COND : IF LP EXP RP BLOCK {$$ = makeNode("IF CONDITION",$3,$5); }
-     | IF LP EXP RP BLOCK ELSE BLOCK { $$ = makeNode("IF ELSE CONDITION", $3, makeNode("TRUE / FALSE", $5, $7));}
-     ;
-
-WHILE_STATEMENT : WHILE LP EXP RP BLOCK {$$ = makeNode("WHILE STATEMENT",$3,$5); }
-                ;
 
 BLOCK_W_RETURN : LC MULT_STATEMENT RETURN_STATEMENT RC {$$ = makeNode("BLOCK WITH RETURN",$2,$3);}
                | LC RETURN_STATEMENT RC {$$ = makeNode("BLOCK WITH RETURN",NULL,$2);}
@@ -121,6 +87,42 @@ BLOCK_W_RETURN : LC MULT_STATEMENT RETURN_STATEMENT RC {$$ = makeNode("BLOCK WIT
 BLOCK : LC MULT_STATEMENT RC {$$ = makeNode("BLOCK",$2,NULL);}
       | LC RC {$$ = makeNode("EMPTY BLOCK",NULL,NULL);}
       ;
+
+MULT_STATEMENT : MULT_STATEMENT STATEMENT { $$ = makeNode("MULTI STATEMENT", $1,$2); }
+                | STATEMENT { $$ = $1 ; }
+                ;
+STATEMENT : ASSIGNMENT SEMI { $$ = makeNode("STATEMENT", $1, NULL); }
+          | VARS SEMI { $$ = makeNode("STATEMENT", $1, NULL); }
+          | COND { $$ = makeNode("STATEMENT", $1, NULL); }
+          | WHILE_STATEMENT { $$ = makeNode("STATEMENT", $1, NULL); }
+          | BLOCK { $$ = makeNode("STATEMENT", $1, NULL); }
+          | PROC { $$ = makeNode("STATEMENT", $1, NULL); }
+          ;
+
+WHILE_STATEMENT : WHILE LP EXP RP BLOCK {$$ = makeNode("WHILE STATEMENT",$3,$5); }
+                ;
+
+COND : IF LP EXP RP BLOCK {$$ = makeNode("IF CONDITION",$3,$5); }
+     | IF LP EXP RP BLOCK ELSE BLOCK { $$ = makeNode("IF ELSE CONDITION", $3, makeNode("TRUE / FALSE", $5, $7));}
+     ;
+
+RETURN_STATEMENT : RETURN EXP SEMI { $$ = makeNode("RETURN STATEMENT",$2,NULL);}
+                 ;
+
+MULT_PARAMS : MULT_PARAMS SEMI PARAMS { $$ = makeNode("MULTIPLE TYPES", $1, $3); }
+           | PARAMS { $$ = $1; }
+           ;
+
+PARAMS : MULT_ID COLON TYP { $$ = makeNode("PARAMETER",$1 ,$3); }
+       ;
+
+VARS : VAR MULT_ID COLON TYP { $$ = makeNode("VARIABLES",$2 ,$4); }
+     | VAR MULT_ID COLON TYPE_STRING LB INT RB { $$ = makeNode("VARIABLES",$2 ,makeNode("STRING",$6,NULL)); }
+     ;
+
+MULT_ID : MULT_ID COMMA ID { $$ = makeNode("MULTIPLE IDENTIFIERS", $1, $3); }
+        | ID { $$ = $1; }
+        ;
 
 ASSIGNMENT : LHS ASSIGN EXP { $$ = makeNode("ASSIGNMENT", $1, $3); }
            | LHS ASSIGN STR { $$ = makeNode("STRING ASSIGNMENT", $1, $3);}
@@ -131,9 +133,8 @@ ASSIGNMENT : LHS ASSIGN EXP { $$ = makeNode("ASSIGNMENT", $1, $3); }
 LHS : ID { $$ = makeNode("ASSIGNMENT TARGET: VARIABLE", $1, NULL); }
     | STR_INDEX { $$ = makeNode("ASSIGNMENT TARGET: STRING", $1, NULL); }
     | DEREF { $$ = makeNode("ASSIGNMENT TARGET: DEREFERENCE", $1, NULL); }
+    ;
 
-STR_INDEX : ID LB EXP RB { $$ = makeNode("STRING INDEX", $1, $3) ;}
-          ;
 MULT_EXP : MULT_EXP COMMA EXP { $$ = makeNode("Multiple Expressions",$1,$3); }
          | EXP { $$ = $1; }
          ;
@@ -172,6 +173,13 @@ EXP : ID { $$ = makeNode("IDENTIFIER", $1, NULL); }
     | PTR OR_OP PTR { $$ = makeNode("||",$1,$3); }
     ;
 
+PTR : ADDRESS ID { $$ = makeNode("POINTER", $2, NULL); }
+    | ADDRESS STR_INDEX { $$ = makeNode("POINTER", $2, NULL); }
+    ;
+
+STR_INDEX : ID LB EXP RB { $$ = makeNode("STRING INDEX", $1, $3) ;}
+          ;
+
 SIZE_OF : ABS ID ABS { $$ = makeNode("SIZE OF",$2,NULL); }
         | ABS STR ABS { $$ = makeNode("SIZE OF",$2,NULL); }
         ;
@@ -189,6 +197,7 @@ BOOL_TYPE : BOOL_TRUE { $$ = makeNode("true", NULL, NULL); }
 
 STR : STRING { $$ = makeNode("STRING CONSTANT",makeNode($1,NULL,NULL),NULL); }
     ;
+
 CHAR : CHARACTER  { $$ = makeNode($1,NULL,NULL); }
      ;
 
@@ -196,10 +205,6 @@ INT : INTEGER { $$ = makeNode($1, NULL, NULL); }
 
 DEREF : DEREFERENCE ID { $$ = makeNode("DEREFERENCE", $2, NULL); }
       ;
-
-PTR : ADDRESS ID { $$ = makeNode("POINTER", $2, NULL); }
-    | ADDRESS STR_INDEX { $$ = makeNode("POINTER", $2, NULL); }
-     ;
 
 ID : IDENTIFIER { $$ = makeNode($1, NULL, NULL); }
    ;

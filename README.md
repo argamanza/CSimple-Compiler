@@ -3,10 +3,18 @@
 
 Created as a project for **"Introduction to Compilation"** course.
 
+The compiler with all its parts was planned and built to be used with [CSimple Programming Language](http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html) - The language which the compiler was made for, as introduced [here](http://www.cs.ucsb.edu/~chris/teaching/cs160/) by Prof. Christopher Kruegel.
+
+Please read the CSimple Manual before using the compiler to understand its structure and requirements.
+
+#### [CSimple Programming Language Manual]((http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html)
+
+
 ### Compiler Checklist
 
 - [x] Scanner (Lexer)
 - [x] Parser
+- [ ] Semantics
 - [ ] Finished Compiler
 
 ---
@@ -36,62 +44,51 @@ cc lex.yy.c y.tab.c -o compiler -ll // compiles the scanner and parser into `com
 
 Now you have your own CSimple Compiler!
 
-```
-until finished
-```
+### Running the Tests:
+There are two ways to test the compiler;
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+1. Write C-Simple code input inside your terminal:
+``` c
+./compiler // execute the compiler runnable file, it now waits for input
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+2. Test the compiler using a test file with C-Simple code:
+``` c
+./compiler < test_file.c // run the compiler with the 'test_file.c' content
 ```
-Give an example
+The input (whether it’s raw input or a test file) must be at least one procedure, which contains the rest of the code, for more info see [this part of the CSimple Manual](http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html#description-of-program-structure) which explains the structure of the CSimple Language.
+
+For this reason, (code must contain at least one procedure and the last statement in the procedure must be a return statement) the minimum structure of an input code, even if the test subject does not concern procedures, will be as follows:
+``` c
+procedure foo() return integer
+{
+  * Input code *
+
+  return 0;
+}
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [flex](https://github.com/westes/flex)  - The Fast Lexical Analyser
+* [GNU Bison](https://www.gnu.org/software/bison/) - Parser generator
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Work in progress...
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+Work in progress...
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Tzahi Argaman** - *Initial work* - [GitHub](https://github.com/argamanza) | [LinkedIn](https://il.linkedin.com/in/argamanza)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Work in progress...
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* Mrs. Alona Kutsyy and Mr. Alexander Shkolnik, lecturers for "Introduction to Compilation" course @ [Sami Shamoon College of Engineering](http://www.sce.ac.il/eng/).
