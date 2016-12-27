@@ -52,15 +52,7 @@ int yyerror(const char *msg);
 
 %%
 
-S : CHAR { printf("Char: "); print_preorder($1,0); }
-  | STR { printf("String: "); print_preorder($1,0); }
-  | DEREF { printf("Dereference: \n"); print_preorder($1,0); }
-  | PTR { printf("Address: \n"); print_preorder($1,0); }
-  | MULT_ID { printf("Multiple Identifiers: \n"); print_preorder($1,0); }
-  | BLOCK { printf("Block: \n"); print_preorder($1,0); }
-  | BLOCK_W_RETURN { printf("Block with Return: \n"); print_preorder($1,0); }
-  | VARS { printf("Variable Decleration: \n"); print_preorder($1,0); }
-  | PROGRAM { printf("Program: \n"); print_preorder($1,0); }
+S : PROGRAM { print_preorder($1,0); }
   ;
 
 PROGRAM : MULTI_PROC { $$ = makeNode("Program",$1,NULL); }
