@@ -5,7 +5,10 @@ Created as a project for **"Introduction to Compilation"** course.
 
 The compiler with all its parts was planned and built to be used with [CSimple Programming Language](http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html) - The language which the compiler was made for, as introduced [here](http://www.cs.ucsb.edu/~chris/teaching/cs160/) by Prof. Christopher Kruegel.
 
-Please read the [CSimple Manual](http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html) before using the compiler to understand its structure and requirements.
+Please read the CSimple Manual before using the compiler to understand its structure and requirements.
+
+#### [CSimple Programming Language Manual]((http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html)
+
 
 ### Compiler Checklist
 
