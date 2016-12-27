@@ -7,7 +7,7 @@ The compiler with all its parts was planned and built to be used with [CSimple P
 
 Please read the CSimple Manual before using the compiler to understand its structure and requirements.
 
-#### [CSimple Programming Language Manual]((http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html)
+#### [CSimple Programming Language Manual](http://www.cs.ucsb.edu/~chris/teaching/cs160/projects/language.html)
 
 
 ### Compiler Checklist
